@@ -33,22 +33,31 @@ export type Blog = {
 
 export type Article = Blog & MicroCMSContentId & MicroCMSDate;
 
-if (!process.env.MICROCMS_SERVICE_DOMAIN) {
-  throw new Error('MICROCMS_SERVICE_DOMAIN is required');
+// 環境変数の確認とフォールバック
+const MICROCMS_SERVICE_DOMAIN = process.env.MICROCMS_SERVICE_DOMAIN;
+const MICROCMS_API_KEY = process.env.MICROCMS_API_KEY;
+
+if (!MICROCMS_SERVICE_DOMAIN) {
+  console.warn('MICROCMS_SERVICE_DOMAIN is not set. Some features may not work properly.');
 }
 
-if (!process.env.MICROCMS_API_KEY) {
-  throw new Error('MICROCMS_API_KEY is required');
+if (!MICROCMS_API_KEY) {
+  console.warn('MICROCMS_API_KEY is not set. Some features may not work properly.');
 }
 
-// Initialize Client SDK.
-export const client = createClient({
-  serviceDomain: process.env.MICROCMS_SERVICE_DOMAIN,
-  apiKey: process.env.MICROCMS_API_KEY,
-});
+// Initialize Client SDK (環境変数が設定されている場合のみ)
+export const client = MICROCMS_SERVICE_DOMAIN && MICROCMS_API_KEY 
+  ? createClient({
+      serviceDomain: MICROCMS_SERVICE_DOMAIN,
+      apiKey: MICROCMS_API_KEY,
+    })
+  : null;
 
 // ブログ一覧を取得
 export const getList = async (queries?: MicroCMSQueries) => {
+  if (!client) {
+    return { contents: [], totalCount: 0, offset: 0, limit: 10 };
+  }
   const listData = await client
     .getList<Blog>({
       endpoint: 'blog',
@@ -60,7 +69,10 @@ export const getList = async (queries?: MicroCMSQueries) => {
 
 // ブログの詳細を取得
 export const getDetail = async (contentId: string, queries?: MicroCMSQueries) => {
-  const detailData = await client
+  if (!client) {
+    notFound();
+  }
+  const detailData = await client!
     .getListDetail<Blog>({
       endpoint: 'blog',
       contentId,
@@ -73,6 +85,9 @@ export const getDetail = async (contentId: string, queries?: MicroCMSQueries) =>
 
 // タグの一覧を取得
 export const getTagList = async (queries?: MicroCMSQueries) => {
+  if (!client) {
+    return { contents: [], totalCount: 0, offset: 0, limit: 10 };
+  }
   const listData = await client
     .getList<Tag>({
       endpoint: 'tags',
@@ -85,7 +100,10 @@ export const getTagList = async (queries?: MicroCMSQueries) => {
 
 // タグの詳細を取得
 export const getTag = async (contentId: string, queries?: MicroCMSQueries) => {
-  const detailData = await client
+  if (!client) {
+    notFound();
+  }
+  const detailData = await client!
     .getListDetail<Tag>({
       endpoint: 'tags',
       contentId,
