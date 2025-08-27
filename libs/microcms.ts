@@ -113,3 +113,17 @@ export const getTag = async (contentId: string, queries?: MicroCMSQueries) => {
 
   return detailData;
 };
+
+// ブログ記事を作成
+export const createBlog = async (data: Omit<Blog, 'id' | 'createdAt' | 'updatedAt' | 'publishedAt' | 'revisedAt'>) => {
+  if (!client) {
+    throw new Error('microCMS client is not initialized');
+  }
+  
+  const result = await client.create({
+    endpoint: 'blog',
+    content: data,
+  });
+  
+  return result;
+};

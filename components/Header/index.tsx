@@ -15,6 +15,9 @@ export default function Header() {
           priority
         />
       </Link>
+      <Link href="/create" className={styles.createLink}>
+        記事を投稿
+      </Link>
     </header>
   );
 }

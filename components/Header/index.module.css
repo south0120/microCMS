@@ -1,8 +1,25 @@
 .header {
   padding: 16px 24px 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .logo {
   height: 24px;
   width: auto;
+}
+
+.createLink {
+  background-color: #007bff;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.createLink:hover {
+  background-color: #0056b3;
 }

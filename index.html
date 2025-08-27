@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIMPLE BLOG</title>
+    <meta name="description" content="シンプルで美しいブログサイト">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">
+                <img src="public/logo.svg" alt="SIMPLE" class="logo-img">
+            </h1>
+            <button class="create-post-btn" onclick="openCreateModal()">記事を投稿</button>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <section class="hero">
+                <h2 class="hero-title">Simple Blog</h2>
+                <p class="hero-description">シンプルで美しいブログサイト</p>
+            </section>
+
+            <section class="search-section">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="記事を検索..." class="search-input">
+                    <button onclick="searchArticles()" class="search-btn">検索</button>
+                </div>
+            </section>
+
+            <section class="tags-section">
+                <h3>タグ</h3>
+                <div class="tags-container" id="tagsContainer">
+                    <!-- タグがここに動的に追加されます -->
+                </div>
+            </section>
+
+            <section class="articles-section">
+                <h3>記事一覧</h3>
+                <div class="articles-grid" id="articlesGrid">
+                    <!-- 記事がここに動的に追加されます -->
+                </div>
+                <div class="pagination" id="pagination">
+                    <!-- ページネーションがここに追加されます -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- 記事作成モーダル -->
+    <div id="createModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>新しい記事を投稿</h2>
+                <span class="close" onclick="closeCreateModal()">&times;</span>
+            </div>
+            <form id="createPostForm" class="create-form">
+                <div class="form-group">
+                    <label for="title">タイトル *</label>
+                    <input type="text" id="title" name="title" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">説明</label>
+                    <input type="text" id="description" name="description">
+                </div>
+                <div class="form-group">
+                    <label for="tags">タグ（カンマ区切り）</label>
+                    <input type="text" id="tags" name="tags" placeholder="例: JavaScript, React, Next.js">
+                </div>
+                <div class="form-group">
+                    <label for="content">本文 *</label>
+                    <textarea id="content" name="content" rows="10" required placeholder="Markdownが使用できます"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" onclick="closeCreateModal()" class="btn btn-secondary">キャンセル</button>
+                    <button type="submit" class="btn btn-primary">投稿する</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 記事詳細モーダル -->
+    <div id="articleModal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2 id="articleTitle"></h2>
+                <span class="close" onclick="closeArticleModal()">&times;</span>
+            </div>
+            <div class="article-meta">
+                <span id="articleDate"></span>
+                <div class="article-tags" id="articleTags"></div>
+            </div>
+            <div class="article-content" id="articleContent"></div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Simple Blog. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
