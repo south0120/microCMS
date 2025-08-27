@@ -7,15 +7,87 @@ class BlogApp {
         this.articlesPerPage = 6;
         this.filteredArticles = [];
         this.activeTag = null;
+        this.autoRefreshInterval = null;
         
         this.init();
     }
     
     init() {
-        this.loadSampleData();
+        this.loadSettings();
+        this.loadData();
+        this.setupEventListeners();
+        this.setupAutoRefresh();
+    }
+    
+    // データの読み込み（microCMSまたはサンプルデータ）
+    async loadData() {
+        try {
+            // microCMSからデータを取得を試行
+            await this.loadFromMicroCMS();
+        } catch (error) {
+            console.log('microCMSから取得できないため、サンプルデータを使用します:', error);
+            this.loadSampleData();
+        }
+        
         this.renderTags();
         this.renderArticles();
-        this.setupEventListeners();
+    }
+    
+    // microCMSからデータを取得
+    async loadFromMicroCMS() {
+        // 環境変数の確認
+        const serviceDomain = this.getMicroCMSConfig().serviceDomain;
+        const apiKey = this.getMicroCMSConfig().apiKey;
+        
+        if (!serviceDomain || !apiKey) {
+            throw new Error('microCMS configuration not found');
+        }
+        
+        const response = await fetch(`https://${serviceDomain}.microcms.io/api/v1/blog`, {
+            headers: {
+                'X-MICROCMS-API-KEY': apiKey
+            }
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        // microCMSのデータを内部形式に変換
+        this.articles = data.contents.map(item => ({
+            id: item.id,
+            title: item.title,
+            description: item.description || '',
+            content: item.content,
+            tags: item.tags?.map(tag => tag.name) || [],
+            date: new Date(item.publishedAt).toLocaleDateString('ja-JP'),
+            author: item.writer?.name || '不明'
+        }));
+        
+        // タグの抽出
+        const allTags = new Set();
+        this.articles.forEach(article => {
+            article.tags.forEach(tag => allTags.add(tag));
+        });
+        this.tags = Array.from(allTags);
+        
+        // 初期状態では全記事を表示
+        this.filteredArticles = [...this.articles];
+        
+        console.log(`microCMSから${this.articles.length}件の記事を取得しました`);
+    }
+    
+    // microCMSの設定を取得
+    getMicroCMSConfig() {
+        // 環境変数またはローカルストレージから取得
+        const config = {
+            serviceDomain: localStorage.getItem('MICROCMS_SERVICE_DOMAIN') || window.MICROCMS_SERVICE_DOMAIN,
+            apiKey: localStorage.getItem('MICROCMS_API_KEY') || window.MICROCMS_API_KEY
+        };
+        
+        return config;
     }
     
     // サンプルデータの読み込み
@@ -657,6 +729,132 @@ TypeScriptを使うことで、より安全で保守性の高いコードが書�
         
         return html;
     }
+    
+    // 設定の読み込み
+    loadSettings() {
+        const settings = this.getStoredSettings();
+        if (settings.serviceDomain) {
+            document.getElementById('serviceDomain').value = settings.serviceDomain;
+        }
+        if (settings.apiKey) {
+            document.getElementById('apiKey').value = settings.apiKey;
+        }
+        document.getElementById('autoRefresh').checked = settings.autoRefresh || false;
+    }
+    
+    // 保存された設定を取得
+    getStoredSettings() {
+        return {
+            serviceDomain: localStorage.getItem('MICROCMS_SERVICE_DOMAIN') || '',
+            apiKey: localStorage.getItem('MICROCMS_API_KEY') || '',
+            autoRefresh: localStorage.getItem('MICROCMS_AUTO_REFRESH') === 'true'
+        };
+    }
+    
+    // 設定を保存
+    saveSettings(serviceDomain, apiKey, autoRefresh) {
+        localStorage.setItem('MICROCMS_SERVICE_DOMAIN', serviceDomain);
+        localStorage.setItem('MICROCMS_API_KEY', apiKey);
+        localStorage.setItem('MICROCMS_AUTO_REFRESH', autoRefresh.toString());
+    }
+    
+    // 設定モーダルを開く
+    openSettingsModal() {
+        this.loadSettings();
+        document.getElementById('settingsModal').classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    // 設定モーダルを閉じる
+    closeSettingsModal() {
+        document.getElementById('settingsModal').classList.remove('show');
+        document.body.style.overflow = 'auto';
+    }
+    
+    // 接続テスト
+    async testConnection() {
+        const statusDiv = document.getElementById('connectionStatus');
+        const serviceDomain = document.getElementById('serviceDomain').value;
+        const apiKey = document.getElementById('apiKey').value;
+        
+        if (!serviceDomain || !apiKey) {
+            statusDiv.innerHTML = 'サービスドメインとAPIキーを入力してください';
+            statusDiv.className = 'connection-status error';
+            return;
+        }
+        
+        statusDiv.innerHTML = '接続テスト中...';
+        statusDiv.className = 'connection-status loading';
+        
+        try {
+            const response = await fetch(`https://${serviceDomain}.microcms.io/api/v1/blog?limit=1`, {
+                headers: {
+                    'X-MICROCMS-API-KEY': apiKey
+                }
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                statusDiv.innerHTML = `✅ 接続成功！${data.totalCount || 0}件の記事が見つかりました`;
+                statusDiv.className = 'connection-status success';
+            } else {
+                statusDiv.innerHTML = `❌ 接続失敗 (${response.status}): 設定を確認してください`;
+                statusDiv.className = 'connection-status error';
+            }
+        } catch (error) {
+            statusDiv.innerHTML = `❌ 接続エラー: ${error.message}`;
+            statusDiv.className = 'connection-status error';
+        }
+    }
+    
+    // 設定を保存してモーダルを閉じる
+    saveSettingsAndClose() {
+        const serviceDomain = document.getElementById('serviceDomain').value;
+        const apiKey = document.getElementById('apiKey').value;
+        const autoRefresh = document.getElementById('autoRefresh').checked;
+        
+        this.saveSettings(serviceDomain, apiKey, autoRefresh);
+        this.closeSettingsModal();
+        this.setupAutoRefresh();
+        this.showMessage('設定を保存しました', 'success');
+    }
+    
+    // microCMSから強制更新
+    async refreshFromMicroCMS() {
+        const refreshBtn = document.querySelector('.refresh-btn');
+        refreshBtn.disabled = true;
+        refreshBtn.textContent = '更新中...';
+        
+        try {
+            await this.loadFromMicroCMS();
+            this.renderTags();
+            this.renderArticles();
+            this.showMessage('記事を更新しました', 'success');
+        } catch (error) {
+            this.showMessage('更新に失敗しました: ' + error.message, 'error');
+        } finally {
+            refreshBtn.disabled = false;
+            refreshBtn.textContent = '🔄 更新';
+        }
+    }
+    
+    // 自動更新の設定
+    setupAutoRefresh() {
+        // 既存のインターバルをクリア
+        if (this.autoRefreshInterval) {
+            clearInterval(this.autoRefreshInterval);
+        }
+        
+        const settings = this.getStoredSettings();
+        if (settings.autoRefresh) {
+            // 5分間隔で自動更新
+            this.autoRefreshInterval = setInterval(() => {
+                this.refreshFromMicroCMS();
+            }, 5 * 60 * 1000);
+            
+            console.log('自動更新が有効になりました（5分間隔）');
+        }
+    }
 }
 
 // グローバル関数（HTMLから呼び出し用）
@@ -672,6 +870,22 @@ function closeArticleModal() {
     blogApp.closeArticleModal();
 }
 
+function openSettingsModal() {
+    blogApp.openSettingsModal();
+}
+
+function closeSettingsModal() {
+    blogApp.closeSettingsModal();
+}
+
+function testConnection() {
+    blogApp.testConnection();
+}
+
+function refreshFromMicroCMS() {
+    blogApp.refreshFromMicroCMS();
+}
+
 function searchArticles() {
     blogApp.searchArticles();
 }
@@ -680,4 +894,10 @@ function searchArticles() {
 let blogApp;
 document.addEventListener('DOMContentLoaded', () => {
     blogApp = new BlogApp();
+    
+    // 設定フォームの送信イベント
+    document.getElementById('settingsForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        blogApp.saveSettingsAndClose();
+    });
 });

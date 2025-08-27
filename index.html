@@ -16,7 +16,11 @@
             <h1 class="logo">
                 <img src="public/logo.svg" alt="SIMPLE" class="logo-img">
             </h1>
-            <button class="create-post-btn" onclick="openCreateModal()">記事を投稿</button>
+            <div class="header-buttons">
+                <button class="settings-btn" onclick="openSettingsModal()">⚙️ 設定</button>
+                <button class="create-post-btn" onclick="openCreateModal()">記事を投稿</button>
+                <button class="refresh-btn" onclick="refreshFromMicroCMS()">🔄 更新</button>
+            </div>
         </div>
     </header>
 
@@ -97,6 +101,39 @@
                 <div class="article-tags" id="articleTags"></div>
             </div>
             <div class="article-content" id="articleContent"></div>
+        </div>
+    </div>
+
+    <!-- 設定モーダル -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>microCMS設定</h2>
+                <span class="close" onclick="closeSettingsModal()">&times;</span>
+            </div>
+            <form id="settingsForm" class="create-form">
+                <div class="form-group">
+                    <label for="serviceDomain">サービスドメイン</label>
+                    <input type="text" id="serviceDomain" name="serviceDomain" placeholder="your-service-domain">
+                    <small>https://your-service-domain.microcms.io の部分</small>
+                </div>
+                <div class="form-group">
+                    <label for="apiKey">APIキー</label>
+                    <input type="password" id="apiKey" name="apiKey" placeholder="Your API Key">
+                    <small>microCMSの管理画面から取得したAPIキー</small>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="autoRefresh" name="autoRefresh">
+                        自動更新を有効にする（5分間隔）
+                    </label>
+                </div>
+                <div class="form-actions">
+                    <button type="button" onclick="testConnection()" class="btn btn-secondary">接続テスト</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+                <div id="connectionStatus" class="connection-status"></div>
+            </form>
         </div>
     </div>
 

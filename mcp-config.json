@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "microcms": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "microcms-mcp-server@latest",
+        "--service-id", "YOUR_MICROCMS_SERVICE_ID",
+        "--api-key", "YOUR_MICROCMS_API_KEY"
+      ]
+    }
+  }
+}
