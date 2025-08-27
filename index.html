@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIMPLE BLOG</title>
+    <title>SAMPLE BLOG</title>
     <meta name="description" content="シンプルで美しいブログサイト">
     <link rel="stylesheet" href="css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,11 +14,10 @@
     <header class="header">
         <div class="container">
             <h1 class="logo">
-                <img src="public/logo.svg" alt="SIMPLE" class="logo-img">
+                <img src="public/logo.svg" alt="SAMPLE" class="logo-img">
             </h1>
             <div class="header-buttons">
                 <button class="settings-btn" onclick="openSettingsModal()">⚙️ 設定</button>
-                <button class="create-post-btn" onclick="openCreateModal()">記事を投稿</button>
                 <button class="refresh-btn" onclick="refreshFromMicroCMS()">🔄 更新</button>
             </div>
         </div>
@@ -27,8 +26,34 @@
     <main class="main">
         <div class="container">
             <section class="hero">
-                <h2 class="hero-title">Simple Blog</h2>
-                <p class="hero-description">シンプルで美しいブログサイト</p>
+                <div class="hero-overlay"></div>
+                <div class="hero-content">
+                    <div class="hero-badge">✨ POWERED BY MICROCMS & MCP</div>
+                    <h2 class="hero-title">
+                        <span class="hero-title-main">Modern Blog</span>
+                        <span class="hero-title-sub">Experience</span>
+                    </h2>
+                    <p class="hero-description">Claude Desktop × microCMS で実現する次世代ブログプラットフォーム</p>
+                    <div class="hero-features">
+                        <div class="feature-item">
+                            <span class="feature-icon">🤖</span>
+                            <span>AI記事作成</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">⚡</span>
+                            <span>リアルタイム更新</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">🎨</span>
+                            <span>モダンデザイン</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-shapes">
+                    <div class="shape shape-1"></div>
+                    <div class="shape shape-2"></div>
+                    <div class="shape shape-3"></div>
+                </div>
             </section>
 
             <section class="search-section">
@@ -139,7 +164,7 @@
 
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2025 Simple Blog. All rights reserved.</p>
+            <p>&copy; 2025 Sample Blog. All rights reserved.</p>
         </div>
     </footer>
 
