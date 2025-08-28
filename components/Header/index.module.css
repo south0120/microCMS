@@ -12,7 +12,7 @@
   margin: 0 auto;
   padding: 20px 24px;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   position: relative;
   z-index: 2;
