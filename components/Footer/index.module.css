@@ -1,6 +1,41 @@
 .footer {
-  padding: 16px 24px;
+  margin-top: 80px;
+  padding: 48px 24px 32px;
+  background: linear-gradient(135deg, var(--color-bg-secondary), var(--color-bg-tertiary));
+  border-top: 1px solid rgba(16, 185, 129, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, rgba(16, 185, 129, 0.02), rgba(5, 150, 105, 0.01));
+  pointer-events: none;
+}
+
+.content {
+  max-width: 1200px;
+  margin: 0 auto;
   text-align: center;
-  color: var(--color-text-main);
-  font-size: 0.8rem;
+  position: relative;
+  z-index: 2;
+}
+
+.cr {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin: 0 0 8px 0;
+  font-weight: 500;
+}
+
+.powered {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin: 0;
+  opacity: 0.8;
 }

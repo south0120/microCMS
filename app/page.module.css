@@ -1,0 +1,285 @@
+/* ヒーローセクション */
+.hero {
+  position: relative;
+  padding: 120px 0 80px;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 50%, #065f46 100%);
+  color: white;
+  overflow: hidden;
+  margin-bottom: 80px;
+}
+
+.heroContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 2;
+}
+
+.heroContent {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.heroBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 8px 20px;
+  border-radius: var(--border-radius-full);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin-bottom: 32px;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+.badgeIcon {
+  font-size: 14px;
+}
+
+.heroTitle {
+  margin-bottom: 24px;
+}
+
+.titleMain {
+  display: block;
+  font-size: 4rem;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, #ffffff, #f0fdf4);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.titleSub {
+  display: block;
+  font-size: 2rem;
+  font-weight: 300;
+  letter-spacing: 2px;
+  opacity: 0.9;
+}
+
+.heroDescription {
+  font-size: 1.25rem;
+  opacity: 0.9;
+  line-height: 1.6;
+  margin-bottom: 48px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.heroFeatures {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.featureItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 12px 24px;
+  border-radius: var(--border-radius-full);
+  font-weight: 500;
+  transition: var(--transition);
+  cursor: default;
+}
+
+.featureItem:hover {
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.featureIcon {
+  font-size: 1.25rem;
+}
+
+/* 背景図形 */
+.heroShapes {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.shape1, .shape2, .shape3 {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  animation: float-shapes 8s ease-in-out infinite;
+}
+
+.shape1 {
+  width: 120px;
+  height: 120px;
+  top: 15%;
+  left: 8%;
+  animation-delay: 0s;
+}
+
+.shape2 {
+  width: 80px;
+  height: 80px;
+  top: 60%;
+  right: 12%;
+  animation-delay: 2.5s;
+}
+
+.shape3 {
+  width: 100px;
+  height: 100px;
+  bottom: 20%;
+  left: 15%;
+  animation-delay: 5s;
+}
+
+@keyframes float-shapes {
+  0%, 100% { 
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 0.3;
+  }
+  33% { 
+    transform: translate(20px, -20px) rotate(120deg);
+    opacity: 0.6;
+  }
+  66% { 
+    transform: translate(-15px, 15px) rotate(240deg);
+    opacity: 0.4;
+  }
+}
+
+/* 記事セクション */
+.articlesSection {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 64px;
+}
+
+.sectionTitle {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.sectionDescription {
+  font-size: 1.125rem;
+  color: var(--color-text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+  .hero {
+    padding: 80px 0 60px;
+    margin-bottom: 60px;
+  }
+  
+  .heroContainer {
+    padding: 0 20px;
+  }
+  
+  .titleMain {
+    font-size: 2.8rem;
+  }
+  
+  .titleSub {
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+  }
+  
+  .heroDescription {
+    font-size: 1.125rem;
+    margin-bottom: 32px;
+  }
+  
+  .heroFeatures {
+    gap: 20px;
+  }
+  
+  .featureItem {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+  
+  .sectionTitle {
+    font-size: 2rem;
+  }
+  
+  .articlesSection {
+    padding: 0 20px;
+  }
+  
+  .sectionHeader {
+    margin-bottom: 48px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding: 60px 0 40px;
+  }
+  
+  .heroContainer {
+    padding: 0 16px;
+  }
+  
+  .titleMain {
+    font-size: 2.2rem;
+  }
+  
+  .titleSub {
+    font-size: 1.25rem;
+  }
+  
+  .heroDescription {
+    font-size: 1rem;
+  }
+  
+  .heroFeatures {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  .heroBadge {
+    font-size: 11px;
+    padding: 6px 16px;
+  }
+  
+  .articlesSection {
+    padding: 0 16px;
+  }
+}

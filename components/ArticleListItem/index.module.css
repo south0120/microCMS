@@ -1,34 +1,115 @@
 .list {
-  margin-bottom: 40px;
+  margin-bottom: 32px;
 }
 
 .link {
   display: flex;
-  gap: 40px;
+  gap: 24px;
+  padding: 24px;
+  border-radius: var(--border-radius-lg);
+  background: var(--color-bg-card);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(16, 185, 129, 0.1);
+  transition: var(--transition);
+  text-decoration: none;
+  color: inherit;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.02), rgba(5, 150, 105, 0.01));
+  opacity: 0;
+  transition: var(--transition);
+  pointer-events: none;
+}
+
+.link:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(16, 185, 129, 0.2);
+}
+
+.link:hover::before {
+  opacity: 1;
 }
 
 .image {
-  width: 240px;
-  height: auto;
+  width: 200px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-md);
+  transition: var(--transition);
+}
+
+.link:hover .image {
+  transform: scale(1.02);
+  box-shadow: var(--shadow-green);
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .title {
-  font-size: 1.6rem;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--color-text-primary);
+  line-height: 1.4;
+  transition: var(--transition);
 }
 
-@media (max-width: 640px) {
+.link:hover .title {
+  color: var(--color-primary-dark);
+}
+
+.date {
+  margin-top: auto;
+  padding-top: 16px;
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
   .link {
-    display: block;
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px;
   }
+  
   .image {
     width: 100%;
-    height: auto;
-    margin-bottom: 1rem;
+    height: 200px;
   }
 
   .title {
-    font-size: 1.4rem;
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .link {
+    padding: 16px;
+  }
+  
+  .image {
+    height: 160px;
+  }
+  
+  .title {
+    font-size: 1.125rem;
   }
 }
