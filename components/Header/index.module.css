@@ -21,10 +21,20 @@
 .logoLink {
   text-decoration: none;
   transition: transform 0.3s ease;
+  outline: none !important;
 }
 
 .logoLink:hover {
   transform: translateY(-2px);
+}
+
+.logoLink:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.logoLink:active {
+  outline: none !important;
 }
 
 .logo {
@@ -32,6 +42,7 @@
   width: auto;
   filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.1));
   transition: filter 0.3s ease;
+  outline: none !important;
 }
 
 .logoLink:hover .logo {

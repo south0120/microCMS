@@ -9,16 +9,16 @@ import styles from './layout.module.css';
 export const metadata = {
   metadataBase: new URL(process.env.BASE_URL || 'http://localhost:3000'),
   title: {
-    template: '%s | Sample Blog',
-    default: 'Sample Blog',
+    template: '%s | MPC Blog',
+    default: 'MPC Blog',
   },
-  description: 'A sample blog presented by microCMS',
+  description: 'MPC Blog - A modern blog platform',
   openGraph: {
     title: {
-      template: '%s | Sample Blog',
-      default: 'Sample Blog',
+      template: '%s | MPC Blog',
+      default: 'MPC Blog',
     },
-    description: 'A sample blog presented by microCMS',
+    description: 'MPC Blog - A modern blog platform',
     images: '/ogp.png',
   },
   alternates: {
