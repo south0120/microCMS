@@ -8,8 +8,8 @@ export default function Header() {
       <div className={styles.container}>
         <Link href="/" className={styles.logoLink}>
           <Image
-            src="/logo.svg"
-            alt="SAMPLE"
+            src="/mcp_blog_logo.svg"
+            alt="MPC Blog"
             className={styles.logo}
             width={348}
             height={133}
